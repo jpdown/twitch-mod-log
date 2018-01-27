@@ -1,0 +1,26 @@
+{
+  "embeds": [
+    {
+      "author": {
+        "name": "Ban",
+        "url": "http://cbenni.com/poisonedpanther/?user=discordlogbot"
+      },
+      "color": 15019533,
+      "fields": [
+        {
+          "name": "Banned User",
+          "value": "`discordlogbot`, User ID:`192256836`"
+        },
+        {
+          "name": "Moderator",
+          "value": "`poisonedpanther`, User ID:`35916092`"
+        },
+        {
+          "name": "Reason",
+          "value": "`test`"
+        }
+      ],
+      "timestamp": "2018-01-27T07:58:45.214393+00:00"
+    }
+  ]
+}
