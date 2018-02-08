@@ -178,7 +178,7 @@ class Bot:
     def _ban(self, msg, userid):
         """Generate message for ban command"""
         #Extract information from Twitch message
-        bannedUser = msg["args"][0]
+        bannedUser = msg["args"][0].lstrip("@")
         bannedUserID = msg["target_user_id"]
         moderator = msg["created_by"]
         moderatorID = msg["created_by_user_id"]
@@ -203,7 +203,7 @@ class Bot:
     def _unban(self, msg, userid):
         """Generate message for unban command"""
         #Extract information from Twitch message
-        unbannedUser = msg["args"][0]
+        unbannedUser = msg["args"][0].lstrip("@")
         unbannedUserID = msg["target_user_id"]
         moderator = msg["created_by"]
         moderatorID = msg["created_by_user_id"]
@@ -223,7 +223,7 @@ class Bot:
     def _timeout(self, msg, userid):
         """Generate message for timeout command"""
         #Extract information from Twitch message
-        bannedUser = msg["args"][0]
+        bannedUser = msg["args"][0].lstrip("@")
         bannedUserID = msg["target_user_id"]
         moderator = msg["created_by"]
         moderatorID = msg["created_by_user_id"]
