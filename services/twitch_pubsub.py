@@ -64,25 +64,25 @@ class PubSub:
 
     async def _listen(self):
         """Function to listen for messages from PubSub, sending appropriate messages to parse_message"""
-        try:
-            while self.listening:
-                msg = await self.ws.receive_json()
-                if msg["type"] == "PONG":
-                    self.pong_received = True
-                elif msg["type"] == "RECONNECT":
-                    raise ConnectionError()
-                elif msg["type"] == "MESSAGE":
-                    await self._parse_message(msg)
-                elif msg["type"] == "RESPONSE" and msg["error"] != "": #if response to topic listens and there is an error
-                    self.onListenError(msg["error"], msg["nonce"])
-                else:
-                    pass
-        except TypeError: #On connection lost (connection lost in this stage raises a TypeError)
-            raise ConnectionError()
+        # try:
+        while self.listening:
+            msg = await self.ws.receive_json()
+            if msg["type"] == "PONG":
+                self.pong_received = True
+            elif msg["type"] == "RECONNECT":
+                raise ConnectionError()
+            elif msg["type"] == "MESSAGE":
+                await self._parse_message(msg)
+            elif msg["type"] == "RESPONSE" and msg["error"] != "": #if response to topic listens and there is an error
+                self.onListenError(msg["error"], msg["nonce"])
+            else:
+                pass
+        # except TypeError: #On connection lost (connection lost in this stage raises a TypeError)
+        #     raise ConnectionError()
 
     async def _ping(self):
         await asyncio.sleep(random.randint(1, 50) / 1000) #Wait for random time from 1ms to 50ms
-        self.ws.send_json({"type": "PING"}) #Send ping
+        await self.ws.send_json({"type": "PING"}) #Send ping
         self.pong_received = False
         self.pongTimer.start() #Start 10 second timer to see if PONG received
 
