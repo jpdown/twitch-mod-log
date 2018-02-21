@@ -249,7 +249,7 @@ class Bot:
         embed = WebHook.create_embed(author=author, fields=fields, color=15019533, timestamp=timestamp)
         return(embed)
 
-    def _null_function(self, msg):
+    def _null_function(self, msg, userid):
         """Function for commands that I will not be supporting"""
         pass
 
