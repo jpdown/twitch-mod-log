@@ -35,7 +35,7 @@ class PubSub:
                 #If internet is down, this will silently fail which means the internet connection on the bot is down
                 self.onError("Twitch PubSub connection lost")
                 #Close session
-                self.session.close()
+                await self.session.close()
                 #Cancel timers for checking pings
                 self.pongTimer.cancel()
                 self.pingTimer.cancel()
