@@ -161,13 +161,13 @@ class Bot:
         try: #Debug, trying to trap and figure out the cause of an error
             blacklist_status = msg["created_by"] not in self.users[userid]["blacklist"]
         except KeyError: #If error occurs
-            self.generic_error("msg[\"created_by\"] error found:\r\n```json\r\n{0}```".format(json.dumps(oldmsg))) #send message to Discord
+            self._generic_error("msg[\"created_by\"] error found:\r\n```json\r\n{0}```".format(json.dumps(oldmsg))) #send message to Discord
         if blacklist_status: #if moderator not blacklisted
             try: #Try to run function to generate message
                 discordMessage = self.commands[msg["moderation_action"]](msg, userid)
                 webhook_url = self.users[userid]["webhook_url"]
             except KeyError: #If command not supported, send message to error Discord channel
-                discordMessage = self.unsupported_action(msg, userid)
+                discordMessage = self._unsupported_action(msg, userid)
                 webhook_url = self.settings["error_webhook"]
             #Create JSON object to send to Discord
             messageJson = {}
