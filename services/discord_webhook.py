@@ -9,9 +9,9 @@ class DiscordWebhook:
         try:
             session = aiohttp.ClientSession()
             await session.post(webhook_url, json=params)
-            session.close()
+            await session.close()
         except aiohttp.client_exceptions.ClientConnectorError: #If internet down, don't crash
-            session.close()
+            await session.close()
 
     def create_embed(self, **kwargs):
         """Function to create embed object with passed args"""
