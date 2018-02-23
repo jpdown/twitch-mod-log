@@ -133,6 +133,7 @@ class Bot:
         self.commands["ban"] = self._ban
         self.commands["unban"] = self._unban
         self.commands["timeout"] = self._timeout
+        self.commands["untimeout"] = self._untimeout
         #Commands to ignore
         self.commands["automod_rejected"] = self._null_function
         self.commands["approved_automod_message"] = self._null_function
@@ -227,8 +228,11 @@ class Bot:
         bannedUserID = msg["target_user_id"]
         moderator = msg["created_by"]
         moderatorID = msg["created_by_user_id"]
-        timeOutTime = int(msg["args"][1])
-        timeOutTime = humanReadableTime.time(timeOutTime)
+        try:
+            timeOutTime = int(msg["args"][1])
+            timeOutTime = humanReadableTime.time(timeOutTime)
+        except ValueError:
+            timeOutTime = "Blank time...?"
         try:
             reason = msg["args"][2]
         except IndexError:
@@ -245,6 +249,26 @@ class Bot:
         fields.append(WebHook.create_field_object(name="Moderator", value="`{0}`, User ID:`{1}`".format(moderator, moderatorID)))
         if reason != "":
             fields.append(WebHook.create_field_object(name="Reason", value="`{0}`".format(reason)))
+        #Create embed object and return
+        embed = WebHook.create_embed(author=author, fields=fields, color=15019533, timestamp=timestamp)
+        return(embed)
+
+    def _untimeout(self, msg, userid):
+        """Generate message for unban command"""
+        #Extract information from Twitch message
+        unbannedUser = msg["args"][0].lstrip("@")
+        unbannedUserID = msg["target_user_id"]
+        moderator = msg["created_by"]
+        moderatorID = msg["created_by_user_id"]
+        twitchChannel = self.users[userid]["name"]
+        logviewerURL = "http://cbenni.com/{0}/?user={1}".format(twitchChannel, unbannedUser)
+        #Get timestamp
+        timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
+        #Create embed objects
+        author = WebHook.create_author_object(name="Twitch Untimeout", url=logviewerURL)
+        fields = []
+        fields.append(WebHook.create_field_object(name="Untimed Out User", value="`{0}`, User ID:`{1}`".format(unbannedUser, unbannedUserID)))
+        fields.append(WebHook.create_field_object(name="Moderator", value="`{0}`, User ID:`{1}`".format(moderator, moderatorID)))
         #Create embed object and return
         embed = WebHook.create_embed(author=author, fields=fields, color=15019533, timestamp=timestamp)
         return(embed)
